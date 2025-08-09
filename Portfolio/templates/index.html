@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.name }}'s Portfolio</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, .nav-link {
+            font-family: 'Poppins', sans-serif;
+        }
+        .animate-fadeIn {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #2b6cb0 0%, #1a202c 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 antialiased">
+
+    <!-- Header and Navigation -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-3xl font-bold text-blue-600 hover:text-blue-800 transition-colors duration-300">
+                Piyush Kalra
+            </a>
+            <div class="space-x-6 hidden md:block">
+                <a href="#about" class="nav-link text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-300">About</a>
+                <a href="#experience" class="nav-link text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-300">Experience</a>
+                <a href="#projects" class="nav-link text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-300">Projects</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-300">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-gradient text-white container-fluid px-6 py-24 md:py-32 text-center animate-fadeIn">
+        <div class="max-w-4xl mx-auto">
+            <div class="w-40 h-40 rounded-full mx-auto mb-6 overflow-hidden shadow-2xl border-4 border-white transform hover:scale-105 transition-transform duration-300">
+                <!-- Placeholder for a professional photo. Replace with your own image URL. -->
+                <img src="https://placehold.co/160x160/ffffff/2c5282?text=P.K" alt="Piyush Kalra Profile Photo" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-6xl md:text-7xl font-extrabold leading-tight mb-4">{{ data.name }}</h1>
+            <p class="text-2xl md:text-3xl font-light max-w-2xl mx-auto text-blue-100">{{ data.tagline }}</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-white py-16 md:py-24 animate-fadeIn">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">About Me</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-lg text-gray-700 leading-relaxed">
+                    <p>{{ data.about }}</p>
+                    <p class="mt-4">My core skills include proficiency in **Python (Flask), JavaScript (React), HTML, and CSS**, alongside a strong understanding of database management with **MongoDB**.</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Core Skills</h3>
+                    <div class="flex flex-wrap gap-3">
+                        {% for skill in data.skills %}
+                        <span class="skill-pill bg-blue-100 text-blue-800 font-medium px-4 py-2 rounded-full shadow-md hover:bg-blue-200 transition-colors duration-300">
+                            {{ skill }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (Internship & Education) -->
+    <section id="experience" class="py-16 md:py-24 bg-gray-50 animate-fadeIn">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Education & Experience</h2>
+
+            <!-- Internship Card -->
+            <div class="mb-12 bg-white rounded-xl shadow-lg p-8 transform transition-transform duration-300 hover:scale-[1.02]">
+                <div class="flex items-center space-x-6 mb-4">
+                    <span class="text-3xl text-blue-600 font-bold">🏢</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ data.internship.title }}</h3>
+                        <p class="text-blue-600 text-lg">{{ data.internship.company }}</p>
+                    </div>
+                </div>
+                <p class="text-gray-500 font-light">{{ data.internship.date }}</p>
+                <p class="text-gray-700 mt-4 leading-relaxed">{{ data.internship.description }}</p>
+            </div>
+
+            <!-- Education Cards -->
+            <div class="space-y-8">
+                {% for edu in data.education %}
+                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col md:flex-row justify-between items-start md:items-center transform transition-transform duration-300 hover:scale-[1.02]">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ edu.degree }}</h3>
+                        <p class="text-blue-600 text-lg">{{ edu.institution }}</p>
+                        <p class="text-gray-500 font-light">{{ edu.years }}</p>
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 font-semibold px-4 py-2 rounded-full mt-4 md:mt-0">{{ edu.gpa }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 md:py-24 animate-fadeIn">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-4xl font-bold text-gray-800 mb-10 text-center">My Projects</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                {% for project in data.projects %}
+                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-2 project-card">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ project.title }}</h3>
+                    <p class="text-gray-600 mb-4">{{ project.description }}</p>
+                    <a href="{{ project.link }}" class="text-blue-600 font-semibold hover:underline transition-colors duration-300 flex items-center space-x-2">
+                        <span>View Project</span>
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gray-800 py-16 md:py-24 text-white animate-fadeIn">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
+            <h2 class="text-4xl font-bold mb-6">Get In Touch</h2>
+            <p class="text-lg mb-8 max-w-2xl mx-auto opacity-80">
+                I'm currently open to new opportunities and would love to connect. You can reach me via the following channels.
+            </p>
+            <div class="flex flex-wrap justify-center space-x-4 md:space-x-6">
+                <a href="mailto:{{ data.email }}" class="inline-block bg-blue-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105">
+                    Email Me
+                </a>
+                <a href="{{ data.linkedin }}" target="_blank" class="inline-block bg-blue-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105">
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center py-6">
+        <p class="text-sm opacity-60">&copy; 2023 {{ data.name }}. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
